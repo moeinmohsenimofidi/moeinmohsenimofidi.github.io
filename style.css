@@ -15,7 +15,6 @@
   --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 @media (prefers-color-scheme: light) {
-  .entry-logo { filter: grayscale(1); opacity: .4; }
   :root {
     --bg: #f5f6f8;
     --panel: #eceef2;
@@ -79,8 +78,7 @@ main { padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 22px
 
 /* ---------- hero ---------- */
 .hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
-.hero-top { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; justify-items: center; }
-.hero-top > * { width: 100%; max-width: 720px; }
+.hero-top { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
 /* business card: a light "paper" card in both themes, so the logo keeps its colors */
 .vcard-wrap { perspective: 1200px; min-width: 0; }
 .vcard {
@@ -127,14 +125,15 @@ main { padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 22px
 .bar-row { display: grid; grid-template-columns: 36px 1fr 34px; gap: 10px; align-items: center; }
 .yr { color: #8b93a5; }
 .n { text-align: right; color: #e6e8ee; }
-.track { height: 12px; border-radius: 3px; background: repeating-linear-gradient(90deg, #1a2030 0 6px, transparent 6px 8px); overflow: hidden; }
-.fill {
-  display: block; height: 100%; width: 0; border-radius: 3px;
-  background: repeating-linear-gradient(90deg, #7ee787 0 6px, transparent 6px 8px);
-  box-shadow: 0 0 10px rgba(126, 231, 135, .35);
-  transition: width 1.2s cubic-bezier(.2, .8, .2, 1);
-}
-.cites.on .fill { width: var(--w); }
+.cells { display: grid; grid-template-columns: repeat(40, 1fr); gap: 2px; height: 12px; }
+.cell { border-radius: 2px; background: #1a2030; }
+.cell.lit { background: #7ee787; box-shadow: 0 0 6px rgba(126, 231, 135, .35); }
+.cites:not(.on) .cell.lit { background: #1a2030; box-shadow: none; }
+.cites.on .cell.lit { animation: bin-on .25s ease-out both; animation-delay: calc(var(--r) * 350ms + var(--k) * 22ms); }
+.cites.on .cell.tip { animation: bin-on .25s ease-out both, bin-tip 1.6s ease-in-out infinite; animation-delay: calc(var(--r) * 350ms + var(--k) * 22ms), calc(var(--r) * 350ms + var(--k) * 22ms + 400ms); }
+@keyframes bin-on { from { background: #1a2030; box-shadow: none; transform: scaleY(.4); } 60% { background: #c5f7c9; transform: scaleY(1.25); } to { background: #7ee787; transform: none; } }
+@keyframes bin-tip { 50% { background: #c5f7c9; box-shadow: 0 0 12px rgba(126, 231, 135, .8); } }
+.bar-row:hover .cell.lit { background: #a8f0ad; }
 .cites-stats { display: flex; justify-content: space-between; gap: 8px; padding: 8px 14px 12px; font-size: 11.5px; color: #8b93a5; border-top: 1px solid #1d2330; }
 .cites-stats b { color: #7ee787; font-weight: 700; }
 h1 { margin: 0; font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
@@ -195,8 +194,8 @@ h1 { margin: 0; font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
 
 .entry { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 10px 0; border-top: 1px dashed var(--border); }
 .entry.has-logo { grid-template-columns: 64px 1fr auto; align-items: center; }
-.entry-logo { width: 64px; height: 40px; object-fit: contain; opacity: .45; filter: grayscale(1) invert(1) brightness(1.15); transition: opacity .25s; }
-.entry:hover .entry-logo { opacity: .8; }
+.entry-logo { width: 64px; height: 44px; object-fit: contain; padding: 5px 6px; border-radius: 8px; background: #ffffff; border: 1px solid var(--border); transition: transform .2s; }
+.entry:hover .entry-logo { transform: scale(1.06); }
 .body h3 + .entry { border-top: 0; padding-top: 0; }
 .entry .title { font-weight: 600; }
 .entry .side { color: var(--muted); font-size: 12px; text-align: right; }
@@ -315,7 +314,7 @@ h1 { margin: 0; font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
   .entry { grid-template-columns: 1fr; gap: 2px; }
   .entry.has-logo { grid-template-columns: 48px 1fr; }
   .entry.has-logo .side { grid-column: 2; }
-  .entry-logo { width: 48px; height: 32px; }
+  .entry-logo { width: 48px; height: 34px; padding: 3px 4px; }
   .entry .side { text-align: left; }
   .colophon dl { grid-template-columns: 1fr; gap: 0; }
   .colophon dd { margin-bottom: 6px; }
@@ -328,5 +327,5 @@ h1 { margin: 0; font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .pulse, .cursor, .d-flow { animation: none; }
-  .fill { transition: none; }
+  .cites.on .cell.lit, .cites.on .cell.tip { animation: none; }
 }

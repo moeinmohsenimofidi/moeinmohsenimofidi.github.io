@@ -42,14 +42,40 @@
   citations.then((c) => {
     const rows = Object.entries(c.byYear).map(([y, n]) => [y, n]);
     const max = Math.max(1, ...rows.map((r) => r[1]));
-    $("cites-bars").innerHTML = rows.map(([y, n]) => `
-      <div class="bar-row"><span class="yr">${y}</span>
-        <span class="track"><span class="fill" style="--w:${(n / max) * 100}%"></span></span>
-        <span class="n">${n}</span></div>`).join("");
+    // Each year is a row of BINS cells; cells light up one by one, numbers count up from 0.
+    const BINS = 40;
+    $("cites-bars").innerHTML = rows.map(([y, n], r) => {
+      const lit = n > 0 ? Math.max(1, Math.round((n / max) * BINS)) : 0;
+      const cells = Array.from({ length: BINS }, (_, k) =>
+        `<i class="cell${k < lit ? " lit" : ""}${k === lit - 1 ? " tip" : ""}" style="--k:${k};--r:${r}"></i>`).join("");
+      return `<div class="bar-row" title="${n} citations in ${y}"><span class="yr">${y}</span>
+        <span class="cells" aria-hidden="true">${cells}</span><span class="n count" data-to="${n}">${n}</span></div>`;
+    }).join("");
     $("cites-stats").innerHTML =
-      `<span><b>${c.total}</b> citations</span><span><b>${c.hIndex}</b> h-index</span><span><b>${c.i10}</b> i10</span>`;
+      `<span><b class="count" data-to="${c.total}">${c.total}</b> citations</span><span><b class="count" data-to="${c.hIndex}">${c.hIndex}</b> h-index</span><span><b class="count" data-to="${c.i10}">${c.i10}</b> i10</span>`;
     $("cites-src").innerHTML = `<a href="${esc(S.links.scholar)}" target="_blank" rel="noopener" aria-label="Open Google Scholar profile">↗</a>`;
-    requestAnimationFrame(() => document.querySelector(".cites").classList.add("on"));
+
+    const box = document.querySelector(".cites");
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const start = () => {
+      box.classList.add("on");
+      if (still) return;
+      box.querySelectorAll(".count").forEach((el) => {
+        const to = +el.dataset.to, t0 = performance.now(), dur = 1400;
+        const step = (t) => {
+          const p = Math.min(1, (t - t0) / dur);
+          el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+          if (p < 1) requestAnimationFrame(step);
+        };
+        el.textContent = "0";
+        requestAnimationFrame(step);
+      });
+    };
+    if (still || !("IntersectionObserver" in window)) start();
+    else {
+      const io = new IntersectionObserver((it) => { if (it[0].isIntersecting) { io.disconnect(); setTimeout(start, 250); } });
+      io.observe(box);
+    }
   });
 
   // ---------- Research diagram (README) ----------
