@@ -28,10 +28,10 @@ window.SITE = {
 
   // Source: https://se-uhd.de/people/
   contact: [
-    { key: "email", value: "s.mohsenimofidi@uni-heidelberg.de", href: "mailto:s.mohsenimofidi@uni-heidelberg.de" },
-    { key: "phone", value: "+49 6221 54 14364", href: "tel:+4962215414364" },
-    { key: "office", value: "Room 2/203, Mathematikon, Im Neuenheimer Feld 205, 69120 Heidelberg", href: "https://www.google.com/maps/search/?api=1&query=Mathematikon+Im+Neuenheimer+Feld+205+69120+Heidelberg" },
-    { key: "lives in", value: "Mannheim, Germany" },
+    { key: "Email", value: "s.mohsenimofidi@uni-heidelberg.de", href: "mailto:s.mohsenimofidi@uni-heidelberg.de" },
+    { key: "Phone", value: "+49 6221 54 14364", href: "tel:+4962215414364" },
+    { key: "Office", value: "Room 2/203, Mathematikon, Im Neuenheimer Feld 205, 69120 Heidelberg", href: "https://www.google.com/maps/search/?api=1&query=Mathematikon+Im+Neuenheimer+Feld+205+69120+Heidelberg" },
+    { key: "Location", icon: "pin", value: "Mannheim, Germany" }, // shown with a pin icon instead of a label
   ],
 
   // Copied by hand from Google Scholar (it has no public API). Update these numbers when you want the chart to change.

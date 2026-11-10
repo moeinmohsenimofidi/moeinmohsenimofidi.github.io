@@ -16,10 +16,10 @@ I am a doctoral researcher in the Software Engineering Group of Prof. Dr. Sebast
 
 ## Contact
 
-- email: s.mohsenimofidi@uni-heidelberg.de
-- phone: +49 6221 54 14364
-- office: Room 2/203, Mathematikon, Im Neuenheimer Feld 205, 69120 Heidelberg
-- lives in: Mannheim, Germany
+- Email: s.mohsenimofidi@uni-heidelberg.de
+- Phone: +49 6221 54 14364
+- Office: Room 2/203, Mathematikon, Im Neuenheimer Feld 205, 69120 Heidelberg
+- Location: Mannheim, Germany
 - github: https://github.com/moeinmohsenimofidi
 - linkedin: https://www.linkedin.com/in/moein-mohseni-mofidi/
 - group: https://se-uhd.de/people/

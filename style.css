@@ -100,6 +100,9 @@ main { padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 22px
 .vcard .contact { margin: 0; }
 .vcard .contact dt { color: var(--red); }
 .vcard .contact dd { color: var(--ink); overflow-wrap: normal; }
+.vcard .contact .pin { width: 15px; height: 15px; fill: var(--red); vertical-align: -3px; }
+.vcard .supervisor { color: var(--ink-2); font-size: 13.5px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .vcard .contact a { color: var(--ink); text-decoration-color: color-mix(in srgb, var(--red) 45%, transparent); }
 .vcard .contact a:hover { color: var(--red); }
 .vcard .social { margin: 0; flex: none; }

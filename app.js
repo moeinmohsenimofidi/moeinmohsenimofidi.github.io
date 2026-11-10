@@ -19,7 +19,7 @@
   $("handle").textContent = S.handle;
   $("name").textContent = S.name;
   $("role").textContent = S.role;
-  $("group").innerHTML = `${ext(S.group.url, esc(S.group.name))}, ${esc(S.group.university)} · group of ${esc(S.group.head)}`;
+  $("group").innerHTML = `${ext(S.group.url, esc(S.group.name))}<br><span class="supervisor">Supervisor: ${esc(S.group.head)}</span>`;
   $("avatar").src = "logos/photo.jpg";
   $("avatar").alt = S.name;
   $("social").innerHTML = Object.entries(S.links).filter(([, u]) => u)
@@ -28,7 +28,8 @@
   const nPubs = S.conference.length + S.journal.length + S.chapters.length + S.preprints.length;
   $("stats").textContent = `${nPubs} papers · ${S.teaching.length} courses · theses: open`;
   $("loc").textContent = S.location;
-  $("contact").innerHTML = S.contact.map((c) => `<dt>${esc(c.key)}</dt><dd>${c.href
+  const PIN = '<svg class="pin" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>';
+  $("contact").innerHTML = S.contact.map((c) => `<dt${c.icon ? ` title="${esc(c.key)}"` : ""}>${c.icon === "pin" ? PIN + `<span class="sr-only">${esc(c.key)}</span>` : esc(c.key)}</dt><dd>${c.href
     ? `<a href="${esc(c.href)}" ${c.href.startsWith("http") ? 'target="_blank" rel="noopener"' : ""}>${esc(c.value)}</a>`
     : esc(c.value)}</dd>`).join("");
 
@@ -207,7 +208,7 @@
     ...sections.map((s) => ({ label: `open ${s.path}`, hint: "section", run: go(s.id) })),
     { label: "open llms.txt (agent view)", hint: "view", run: () => $("mode-agent").click() },
     { label: "open thesis guidelines", hint: "link", run: open(T.guidelines) },
-    { label: "copy email address", hint: "copy", run: () => navigator.clipboard?.writeText(S.contact.find((c) => c.key === "email").value) },
+    { label: "copy email address", hint: "copy", run: () => navigator.clipboard?.writeText(S.contact.find((c) => c.key === "Email").value) },
     { label: "copy all BibTeX", hint: "copy", run: () => navigator.clipboard?.writeText(Object.values(BIB).join("\n\n")) },
     { label: "open Google Scholar", hint: "link", run: open(S.links.scholar) },
     { label: "open GitHub", hint: "link", run: open(S.links.github) },
