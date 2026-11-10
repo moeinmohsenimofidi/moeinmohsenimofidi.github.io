@@ -39,7 +39,7 @@ window.siteToMarkdown = function (S) {
     ...S.experience.map(entry),
     ...(S.education.length ? ["", "## Education", "", ...S.education.map(entry)] : []),
     "",
-    "## Open theses (Bachelor & Master)",
+    "## Open theses (Bachelor & Master, for students at Heidelberg University)",
     "",
     S.theses.intro,
     "",

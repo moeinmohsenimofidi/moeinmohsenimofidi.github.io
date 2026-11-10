@@ -153,7 +153,7 @@
       </div>`).join("") },
     { id: "experience", path: "experience.yaml", icon: "Y", html: entries("experience", S.experience) + entries("education", S.education) },
     { id: "theses", path: "theses/OPEN_POSITIONS.md", icon: "M↓", badge: "open", html: `
-      <div class="banner"><span class="pulse"></span><strong>Looking for Bachelor's and Master's students</strong></div>
+      <div class="banner"><span class="pulse"></span><strong>Bachelor's and Master's theses</strong><span class="banner-sub">for students at Heidelberg University</span></div>
       <p>${esc(T.intro)}</p>
       <h3 class="mono">## Before you apply</h3>
       <ul class="checks mono-list">${T.requirements.map((t) => `<li><span class="box mono">[ ]</span>${esc(t)}</li>`).join("")}</ul>

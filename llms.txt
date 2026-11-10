@@ -68,7 +68,7 @@ Citations (Google Scholar, as of 10 Nov 2026): 192, h-index 6, i10-index 5.
 - Ph.D., Empirical Software Engineering, Heidelberg University, Heidelberg, DE (Oct 2025 – present)
 - M.Sc., Software Engineering for Information Systems, Free University of Bozen-Bolzano, Bolzano, IT (Sep 2021 – Mar 2024) – Thesis: Applying Prompt Engineering to turn LLM into Digital Assistant for Startups
 
-## Open theses (Bachelor & Master)
+## Open theses (Bachelor & Master, for students at Heidelberg University)
 
 I supervise Bachelor's and Master's theses on agentic software engineering. Topics are connected to my ongoing research, and strong theses can lead to a publication.
 
