@@ -123,9 +123,9 @@
       <li${i >= 5 ? ' class="old" hidden' : ""}><span class="when mono">${esc(n.date)}</span>
         <span class="what">${n.url ? ext(n.url, esc(n.text)) : esc(n.text)}</span></li>`).join("")}</ol>
       ${S.news.length > 5 ? `<button id="log-more" class="more mono">show ${S.news.length - 5} older</button>` : ""}` },
-    { id: "publications", path: "research/publications.bib", icon: "{}", html: citationsBox() +
+    { id: "publications", path: "research/publications.bib", icon: "{}", html:
       pubs("conference papers", S.conference) + pubs("journal articles", S.journal) +
-      pubs("book chapters", S.chapters) + pubs("preprints", S.preprints) },
+      pubs("book chapters", S.chapters) + pubs("preprints", S.preprints) + citationsBox() },
     { id: "teaching", path: "teaching/courses.yaml", icon: "Y", html: S.teaching.map((t) => `
       <div class="course">
         <div class="semester mono">${esc(t.term)}</div>
