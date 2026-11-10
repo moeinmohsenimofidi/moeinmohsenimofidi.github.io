@@ -1,6 +1,6 @@
 // Turns window.SITE into Markdown. Used by the "Agent view" on the page and by build.js (llms.txt).
 window.siteToMarkdown = function (S) {
-  const pub = (p) => `- ${p.authors}. **${p.title}**. ${p.venue}, ${p.year}. https://doi.org/${p.doi}${p.arxiv ? ` (preprint: https://arxiv.org/abs/${p.arxiv})` : ""}`;
+  const pub = (p) => `- ${p.authors}. **${p.title}**. ${p.venue}, ${p.year}.${p.accept ? ` Acceptance rate ${p.accept}.` : ""} https://doi.org/${p.doi}${p.arxiv ? ` (preprint: https://arxiv.org/abs/${p.arxiv})` : ""}${(p.extra || []).map(([l, u]) => `, ${l}: ${u}`).join("")}`;
   const list = (title, items) => (items.length ? [`### ${title}`, "", ...items.map(pub), ""] : []);
   const entry = (e) => `- ${e.title}, ${e.org}, ${e.place} (${e.years})${e.note ? ` – ${e.note}` : ""}`;
   const links = Object.entries(S.links).filter(([, u]) => u).map(([k, u]) => `- ${k}: ${u.replace(/^mailto:/, "")}`);
@@ -28,6 +28,7 @@ window.siteToMarkdown = function (S) {
     "",
     ...list("Conference papers", S.conference),
     ...list("Journal articles", S.journal),
+    ...list("Workshop papers", S.workshop),
     ...list("Book chapters", S.chapters),
     ...list("Preprints", S.preprints),
     "## Teaching",

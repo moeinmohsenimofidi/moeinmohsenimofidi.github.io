@@ -32,23 +32,23 @@ Citations (Google Scholar, as of 10 Nov 2026): 192, h-index 6, i10-index 5.
 
 ### Conference papers
 
-- Matthias Galster, Seyedmoein Mohsenimofidi, Levi Böhme, Jai Lal Lulla, Abubakar Muhammad Auwal, Christoph Treude, Sebastian Baltes. **A Dataset of Agentic AI Coding Tool Configurations**. AIware 2026, 2026. https://doi.org/10.1145/3805760.3814922 (preprint: https://arxiv.org/abs/2605.08435)
-- Matthias Galster, Seyedmoein Mohsenimofidi, Jai Lal Lulla, Abubakar Muhammad Auwal, Christoph Treude, Sebastian Baltes. **Configuring Agentic AI Coding Tools: An Exploratory Study**. AIware 2026, 2026. https://doi.org/10.1145/3805760.3814887 (preprint: https://arxiv.org/abs/2602.14690)
-- Abubakar Muhammad Auwal, Seyedmoein Mohsenimofidi, Jai Lal Lulla, Jie M. Zhang, Christoph Treude, Sebastian Baltes, Matthias Galster. **An Exploratory Study of Agent Plans for Agentic AI Coding Tools in Open-Source Software**. ESEM 2026, 2026. https://doi.org/10.4230/lipics.esem.2026.54 (preprint: https://arxiv.org/abs/2608.04661)
-- Seyedmoein Mohsenimofidi, Matthias Galster, Christoph Treude, Sebastian Baltes. **Context Engineering for AI Agents in Open-Source Software**. MSR 2026, 2026. https://doi.org/10.1145/3793302.3793350 (preprint: https://arxiv.org/abs/2510.21413)
+- Matthias Galster, Seyedmoein Mohsenimofidi, Levi Böhme, Jai Lal Lulla, Muhammad Auwal Abubakar, Christoph Treude, Sebastian Baltes. **A Dataset of Agentic AI Coding Tool Configurations**. AIware 2026, 2026. https://doi.org/10.1145/3805760.3814922 (preprint: https://arxiv.org/abs/2605.08435), data: https://doi.org/10.5281/zenodo.19375880, pipeline: https://doi.org/10.5281/zenodo.19375429, website: https://se-uhd.de/ai-config-dataset/
+- Matthias Galster, Seyedmoein Mohsenimofidi, Jai Lal Lulla, Muhammad Auwal Abubakar, Christoph Treude, Sebastian Baltes. **Configuring Agentic AI Coding Tools: An Exploratory Study**. AIware 2026, 2026. https://doi.org/10.1145/3805760.3814887 (preprint: https://arxiv.org/abs/2602.14690), supplement: https://doi.org/10.5281/zenodo.18625980
+- Muhammad Auwal Abubakar, Seyedmoein Mohsenimofidi, Jai Lal Lulla, Jie M. Zhang, Christoph Treude, Sebastian Baltes, Matthias Galster. **An Exploratory Study of Agent Plans for Agentic AI Coding Tools in Open-Source Software**. ESEM 2026, 2026. https://doi.org/10.4230/lipics.esem.2026.54 (preprint: https://arxiv.org/abs/2608.04661), supplement: https://doi.org/10.5281/zenodo.20444387
+- Seyedmoein Mohsenimofidi, Matthias Galster, Christoph Treude, Sebastian Baltes. **Context Engineering for AI Agents in Open-Source Software**. MSR 2026, 2026. Acceptance rate 30% (48/158). https://doi.org/10.1145/3793302.3793350 (preprint: https://arxiv.org/abs/2510.21413), slides: https://assets.empirical-software.engineering/pdf/msr26-context-engineering-slides.pdf, supplement: https://doi.org/10.5281/zenodo.17428770
 
 ### Journal articles
 
-- Sebastian Baltes, Timo Speith, Brenda Chiteri, Seyedmoein Mohsenimofidi, Shalini Chakraborty, Daniel Buschek. **On the Need to Rethink Trust in AI Assistants for Software Development: A Critical Review**. IEEE Transactions on Software Engineering, 2026. https://doi.org/10.1109/tse.2026.3659804 (preprint: https://arxiv.org/abs/2504.12461)
+- Sebastian Baltes, Timo Speith, Brenda Chiteri, Seyedmoein Mohsenimofidi, Shalini Chakraborty, Daniel Buschek. **On the Need to Rethink Trust in AI Assistants for Software Development: A Critical Review**. IEEE Transactions on Software Engineering, 2026. https://doi.org/10.1109/tse.2026.3659804 (preprint: https://arxiv.org/abs/2504.12461), supplement: https://doi.org/10.5281/zenodo.15031354
+
+### Workshop papers
+
+- Jai Lal Lulla, Vahram Nersesyan, Seyedmoein Mohsenimofidi, Christoph Treude, Sebastian Baltes. **Loop Engineering: Building Blocks, Adoption, and Impact**. JAWs@ASE 2026 (2nd Journal Ahead Workshop), 2026. https://doi.org/10.48550/arxiv.2608.21884 (preprint: https://arxiv.org/abs/2608.21884), supplement: https://doi.org/10.5281/zenodo.21540692
+- Jai Lal Lulla, Seyedmoein Mohsenimofidi, Matthias Galster, Jie M. Zhang, Sebastian Baltes, Christoph Treude. **On the Impact of AGENTS.md Files on the Efficiency of AI Coding Agents**. JAWs@ICSE 2026 (1st Journal Ahead Workshop), 2026. Acceptance rate 39% (31/80). https://doi.org/10.48550/arxiv.2601.20404 (preprint: https://arxiv.org/abs/2601.20404), data: https://doi.org/10.5281/zenodo.18348506
 
 ### Book chapters
 
 - Seyedmoein Mohsenimofidi, Akshy Sripad Raghavendra Prasad, Aida Zahid, Usman Rafiq, Xiaofeng Wang, Mohammad Idris Attal. **Classifying User Intent for Effective Prompt Engineering: A Case of a Chatbot for Startup Teams**. Generative AI for Effective Software Development (Springer), 2024. https://doi.org/10.1007/978-3-031-55642-5_15
-
-### Preprints
-
-- Jai Lal Lulla, Vahram Nersesyan, Seyedmoein Mohsenimofidi, Christoph Treude, Sebastian Baltes. **Loop Engineering: Building Blocks, Adoption, and Impact**. arXiv, 2026. https://doi.org/10.48550/arxiv.2608.21884 (preprint: https://arxiv.org/abs/2608.21884)
-- Jai Lal Lulla, Seyedmoein Mohsenimofidi, Matthias Galster, Jie M. Zhang, Sebastian Baltes, Christoph Treude. **On the Impact of AGENTS.md Files on the Efficiency of AI Coding Agents**. arXiv, 2026. https://doi.org/10.48550/arxiv.2601.20404 (preprint: https://arxiv.org/abs/2601.20404)
 
 ## Teaching
 

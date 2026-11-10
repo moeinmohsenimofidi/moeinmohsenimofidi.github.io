@@ -90,12 +90,13 @@
   };
   const pubs = (label, list) => !list.length ? "" : `<h3 class="mono">// ${label}</h3>` + list.map((p) => `
     <article class="pub">
-      <span class="venue mono">${esc(p.venue)}${/\d{4}/.test(p.venue) ? "" : " " + p.year}</span>
+      <span class="venue mono">${esc(p.venue)}${/\d{4}/.test(p.venue) ? "" : " " + p.year}${p.accept ? ` · acceptance rate ${esc(p.accept)}` : ""}</span>
       <div class="title">${ext("https://doi.org/" + p.doi, esc(p.title))}</div>
       <div class="authors">${boldName(p.authors)}</div>
       <div class="plinks mono">
         ${ext("https://doi.org/" + p.doi, "doi")}
         ${p.arxiv ? ext(`https://arxiv.org/pdf/${p.arxiv}`, "pdf") + ext(`https://arxiv.org/abs/${p.arxiv}`, "arXiv") : ""}
+        ${(p.extra || []).map(([l, u]) => ext(u, esc(l))).join("")}
         ${BIB[p.doi] ? `<button class="bib-btn" data-doi="${esc(p.doi)}" aria-expanded="false">bib</button>` : ""}
       </div>
       ${BIB[p.doi] ? `<div class="bib" hidden><button class="bib-copy mono">copy</button><pre class="mono">${esc(BIB[p.doi])}</pre><div class="bib-src mono">source: ${DBLP[p.doi] ? ext(DBLP[p.doi].match(/biburl\s*=\s*\{([^}]*)\.bib\}/)[1], "dblp") : ext("https://doi.org/" + p.doi, "doi.org")}</div></div>` : ""}
@@ -121,7 +122,7 @@
       ${S.news.length > 5 ? `<button id="log-more" class="more mono">show ${S.news.length - 5} older</button>` : ""}` },
     { id: "publications", path: "research/publications.bib", icon: "{}", html:
       pubs("conference papers", S.conference) + pubs("journal articles", S.journal) +
-      pubs("book chapters", S.chapters) + pubs("preprints", S.preprints) + citationsBox() },
+      pubs("workshop papers", S.workshop) + pubs("book chapters", S.chapters) + pubs("preprints", S.preprints) + citationsBox() },
     { id: "teaching", path: "teaching/courses.yaml", icon: "Y", html: S.teaching.map((t) => `
       <div class="course">
         <div class="semester mono">${esc(t.term)}</div>
@@ -185,7 +186,7 @@
   });
 
   // ---------- Command palette (⌘K, Ctrl+K or /) ----------
-  const allPubs = [...S.conference, ...S.journal, ...S.chapters, ...S.preprints];
+  const allPubs = [...S.conference, ...S.journal, ...S.workshop, ...S.chapters, ...S.preprints];
   const go = (id) => () => $(id).scrollIntoView({ behavior: "smooth" });
   const open = (url) => () => window.open(url, "_blank", "noopener");
   const commands = [

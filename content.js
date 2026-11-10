@@ -68,31 +68,37 @@ window.SITE = {
     "For research questions or collaboration, contact s.mohsenimofidi@uni-heidelberg.de.",
   ],
 
-  // Source: OpenAlex (author A5095107558). Datasets and supplementary material are left out.
+  // Sources: OpenAlex (author A5095107558) and https://empirical-software.engineering/publications/.
+  // Optional per paper: accept (acceptance rate), extra ([label, url] pairs: data, slides, ...).
   conference: [
     {
-      authors: "Matthias Galster, Seyedmoein Mohsenimofidi, Levi Böhme, Jai Lal Lulla, Abubakar Muhammad Auwal, Christoph Treude, Sebastian Baltes",
+      authors: "Matthias Galster, Seyedmoein Mohsenimofidi, Levi Böhme, Jai Lal Lulla, Muhammad Auwal Abubakar, Christoph Treude, Sebastian Baltes",
       title: "A Dataset of Agentic AI Coding Tool Configurations",
       venue: "AIware 2026", year: 2026,
       doi: "10.1145/3805760.3814922", arxiv: "2605.08435",
+      extra: [["data", "https://doi.org/10.5281/zenodo.19375880"], ["pipeline", "https://doi.org/10.5281/zenodo.19375429"], ["website", "https://se-uhd.de/ai-config-dataset/"]],
     },
     {
-      authors: "Matthias Galster, Seyedmoein Mohsenimofidi, Jai Lal Lulla, Abubakar Muhammad Auwal, Christoph Treude, Sebastian Baltes",
+      authors: "Matthias Galster, Seyedmoein Mohsenimofidi, Jai Lal Lulla, Muhammad Auwal Abubakar, Christoph Treude, Sebastian Baltes",
       title: "Configuring Agentic AI Coding Tools: An Exploratory Study",
       venue: "AIware 2026", year: 2026,
       doi: "10.1145/3805760.3814887", arxiv: "2602.14690",
+      extra: [["supplement", "https://doi.org/10.5281/zenodo.18625980"]],
     },
     {
-      authors: "Abubakar Muhammad Auwal, Seyedmoein Mohsenimofidi, Jai Lal Lulla, Jie M. Zhang, Christoph Treude, Sebastian Baltes, Matthias Galster",
+      authors: "Muhammad Auwal Abubakar, Seyedmoein Mohsenimofidi, Jai Lal Lulla, Jie M. Zhang, Christoph Treude, Sebastian Baltes, Matthias Galster",
       title: "An Exploratory Study of Agent Plans for Agentic AI Coding Tools in Open-Source Software",
       venue: "ESEM 2026", year: 2026,
       doi: "10.4230/lipics.esem.2026.54", arxiv: "2608.04661",
+      extra: [["supplement", "https://doi.org/10.5281/zenodo.20444387"]],
     },
     {
       authors: "Seyedmoein Mohsenimofidi, Matthias Galster, Christoph Treude, Sebastian Baltes",
       title: "Context Engineering for AI Agents in Open-Source Software",
       venue: "MSR 2026", year: 2026,
       doi: "10.1145/3793302.3793350", arxiv: "2510.21413",
+      accept: "30% (48/158)",
+      extra: [["slides", "https://assets.empirical-software.engineering/pdf/msr26-context-engineering-slides.pdf"], ["supplement", "https://doi.org/10.5281/zenodo.17428770"]],
     },
   ],
 
@@ -102,6 +108,7 @@ window.SITE = {
       title: "On the Need to Rethink Trust in AI Assistants for Software Development: A Critical Review",
       venue: "IEEE Transactions on Software Engineering", year: 2026,
       doi: "10.1109/tse.2026.3659804", arxiv: "2504.12461",
+      extra: [["supplement", "https://doi.org/10.5281/zenodo.15031354"]],
     },
   ],
 
@@ -114,20 +121,26 @@ window.SITE = {
     },
   ],
 
-  preprints: [
+  // Journal Ahead Workshop papers; the DOI is the arXiv version.
+  workshop: [
     {
       authors: "Jai Lal Lulla, Vahram Nersesyan, Seyedmoein Mohsenimofidi, Christoph Treude, Sebastian Baltes",
       title: "Loop Engineering: Building Blocks, Adoption, and Impact",
-      venue: "arXiv", year: 2026,
+      venue: "JAWs@ASE 2026 (2nd Journal Ahead Workshop)", year: 2026,
       doi: "10.48550/arxiv.2608.21884", arxiv: "2608.21884",
+      extra: [["supplement", "https://doi.org/10.5281/zenodo.21540692"]],
     },
     {
       authors: "Jai Lal Lulla, Seyedmoein Mohsenimofidi, Matthias Galster, Jie M. Zhang, Sebastian Baltes, Christoph Treude",
       title: "On the Impact of AGENTS.md Files on the Efficiency of AI Coding Agents",
-      venue: "arXiv", year: 2026,
+      venue: "JAWs@ICSE 2026 (1st Journal Ahead Workshop)", year: 2026,
       doi: "10.48550/arxiv.2601.20404", arxiv: "2601.20404",
+      accept: "39% (31/80)",
+      extra: [["data", "https://doi.org/10.5281/zenodo.18348506"]],
     },
   ],
+
+  preprints: [],
 
   theses: {
     intro:
