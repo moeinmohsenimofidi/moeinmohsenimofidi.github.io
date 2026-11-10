@@ -20,7 +20,7 @@
   $("name").textContent = S.name;
   $("role").textContent = S.role;
   $("group").innerHTML = `${ext(S.group.url, esc(S.group.name))}, ${esc(S.group.university)} · group of ${esc(S.group.head)}`;
-  $("avatar").src = "photo.jpg";
+  $("avatar").src = "logos/photo.jpg";
   $("avatar").alt = S.name;
   $("social").innerHTML = Object.entries(S.links).filter(([, u]) => u)
     .map(([k, u]) => `<a href="${esc(u)}" ${u.startsWith("mailto:") ? "" : 'target="_blank" rel="noopener"'} aria-label="${LABELS[k]}" title="${LABELS[k]}"><svg viewBox="0 0 24 24">${ICONS[k]}</svg></a>`).join("");
