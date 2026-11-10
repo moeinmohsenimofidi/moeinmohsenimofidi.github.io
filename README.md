@@ -1,3 +1,5 @@
-# moeinmohsenimofidi.github.io
+# Welcome to my homepage
 
-My personal website: https://moeinmohsenimofidi.github.io
+https://moeinmohsenimofidi.github.io
+
+For further information, visit the website of our group, the Software Engineering Group at Heidelberg University (SE@UHD): https://se-uhd.de/
