@@ -16,7 +16,6 @@
 
   // ---------- Header / hero ----------
   document.title = S.name;
-  $("handle").textContent = S.handle;
   $("name").textContent = S.name;
   $("role").textContent = S.role;
   $("group").innerHTML = `${ext(S.group.url, esc(S.group.name))}<br><span class="supervisor">Supervisor: ${esc(S.group.head)}</span>`;
@@ -25,9 +24,6 @@
   $("social").innerHTML = Object.entries(S.links).filter(([, u]) => u)
     .map(([k, u]) => `<a href="${esc(u)}" ${u.startsWith("mailto:") ? "" : 'target="_blank" rel="noopener"'} aria-label="${LABELS[k]}" title="${LABELS[k]}"><svg viewBox="0 0 24 24">${ICONS[k]}</svg></a>`).join("");
 
-  const nPubs = S.conference.length + S.journal.length + S.chapters.length + S.preprints.length;
-  $("stats").textContent = `${nPubs} papers · ${S.teaching.length} courses · theses: open`;
-  $("loc").textContent = S.location;
   const PIN = '<svg class="pin" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>';
   $("contact").innerHTML = S.contact.map((c) => `<dt${c.icon ? ` title="${esc(c.key)}"` : ""}>${c.icon === "pin" ? PIN + `<span class="sr-only">${esc(c.key)}</span>` : esc(c.key)}</dt><dd>${c.href
     ? `<a href="${esc(c.href)}" ${c.href.startsWith("http") ? 'target="_blank" rel="noopener"' : ""}>${esc(c.value)}</a>`
@@ -188,30 +184,13 @@
     e.target.remove();
   });
 
-  const md = window.siteToMarkdown(S);
-
-  // ---------- Human / Agent view ----------
-  $("agent-md").textContent = md;
-  const setMode = (agent) => {
-    $("human").hidden = agent;
-    $("agent").hidden = !agent;
-    $("mode-human").classList.toggle("on", !agent);
-    $("mode-agent").classList.toggle("on", agent);
-    $("mode-human").setAttribute("aria-pressed", String(!agent));
-    $("mode-agent").setAttribute("aria-pressed", String(agent));
-    document.body.classList.toggle("agent-mode", agent);
-  };
-  $("mode-human").onclick = () => setMode(false);
-  $("mode-agent").onclick = () => { setMode(true); $("agent").scrollIntoView({ behavior: "smooth" }); };
-  $("copy").onclick = () => copyText($("copy"), md);
-
   // ---------- Command palette (⌘K, Ctrl+K or /) ----------
   const allPubs = [...S.conference, ...S.journal, ...S.chapters, ...S.preprints];
-  const go = (id) => () => { setMode(false); $(id).scrollIntoView({ behavior: "smooth" }); };
+  const go = (id) => () => $(id).scrollIntoView({ behavior: "smooth" });
   const open = (url) => () => window.open(url, "_blank", "noopener");
   const commands = [
     ...sections.map((s) => ({ label: `open ${s.path}`, hint: "section", run: go(s.id) })),
-    { label: "open llms.txt (agent view)", hint: "view", run: () => $("mode-agent").click() },
+    { label: "open llms.txt (plain-text version for AI agents)", hint: "link", run: open("llms.txt") },
     { label: "open thesis guidelines", hint: "link", run: open(T.guidelines) },
     { label: "copy email address", hint: "copy", run: () => navigator.clipboard?.writeText(S.contact.find((c) => c.key === "Email").value) },
     { label: "copy all BibTeX", hint: "copy", run: () => navigator.clipboard?.writeText(Object.values(BIB).join("\n\n")) },
@@ -249,7 +228,6 @@
   });
   list.addEventListener("click", (e) => { const li = e.target.closest("li[data-i]"); if (li) runSel(+li.dataset.i); });
   pal.addEventListener("click", (e) => { if (e.target === pal) closePal(); });
-  $("pal-open").addEventListener("click", openPal);
 
   // ---------- Scroll animations (each runs once, when a section first comes into view) ----------
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
@@ -311,6 +289,5 @@
   }
 
   // Sections are rendered by this script, so jump to a #hash link after rendering.
-  if (location.hash === "#agent") $("mode-agent").click();
-  else if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
+  if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
 })();
