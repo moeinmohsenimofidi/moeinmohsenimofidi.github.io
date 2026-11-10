@@ -37,48 +37,6 @@
   $("c-year").textContent = new Date().getFullYear();
   $("c-name").textContent = S.name;
 
-  // ---------- Citations per year (Google Scholar snapshot) ----------
-  const citations = Promise.resolve(S.citations);
-
-  citations.then((c) => {
-    const rows = Object.entries(c.byYear).map(([y, n]) => [y, n]);
-    const max = Math.max(1, ...rows.map((r) => r[1]));
-    // Each year is a row of BINS cells; cells light up one by one, numbers count up from 0.
-    const BINS = 40;
-    $("cites-bars").innerHTML = rows.map(([y, n], r) => {
-      const lit = n > 0 ? Math.max(1, Math.round((n / max) * BINS)) : 0;
-      const cells = Array.from({ length: BINS }, (_, k) =>
-        `<i class="cell${k < lit ? " lit" : ""}${k === lit - 1 ? " tip" : ""}" style="--k:${k};--r:${r}"></i>`).join("");
-      return `<div class="bar-row" title="${n} citations in ${y}"><span class="yr">${y}</span>
-        <span class="cells" aria-hidden="true">${cells}</span><span class="n count" data-to="${n}">${n}</span></div>`;
-    }).join("");
-    $("cites-stats").innerHTML =
-      `<span><b class="count" data-to="${c.total}">${c.total}</b> citations</span><span><b class="count" data-to="${c.hIndex}">${c.hIndex}</b> h-index</span><span><b class="count" data-to="${c.i10}">${c.i10}</b> i10</span>`;
-    $("cites-src").innerHTML = `<a href="${esc(S.links.scholar)}" target="_blank" rel="noopener" aria-label="Open Google Scholar profile">↗</a>`;
-
-    const box = document.querySelector(".cites");
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const start = () => {
-      box.classList.add("on");
-      if (still) return;
-      box.querySelectorAll(".count").forEach((el) => {
-        const to = +el.dataset.to, t0 = performance.now(), dur = 1400;
-        const step = (t) => {
-          const p = Math.min(1, (t - t0) / dur);
-          el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
-          if (p < 1) requestAnimationFrame(step);
-        };
-        el.textContent = "0";
-        requestAnimationFrame(step);
-      });
-    };
-    if (still || !("IntersectionObserver" in window)) start();
-    else {
-      const io = new IntersectionObserver((it) => { if (it[0].isIntersecting) { io.disconnect(); setTimeout(start, 250); } });
-      io.observe(box);
-    }
-  });
-
   // ---------- Research diagram (README) ----------
   const fileBox = (y, name) => `<g class="d-file" transform="translate(40 ${y})"><rect width="150" height="30" rx="6"/><text x="12" y="20">${name}</text></g>`;
   const DIAGRAM = `
@@ -101,6 +59,32 @@
         <text class="d-label d-bad" x="375" y="46" text-anchor="middle">drift: stale reference to the code</text>
       </svg>
     </figure>`;
+
+  // ---------- Citations (Google Scholar snapshot), shown as a breakdown in publications.bib ----------
+  const C = S.citations;
+  const citationsBox = () => `
+    <details class="cites-details">
+      <summary class="mono"><span class="cs-key">// citations</span>
+        <span><b>${C.total}</b> citations · h-index <b>${C.hIndex}</b> · i10 <b>${C.i10}</b></span>
+        <span class="cs-hint" aria-hidden="true"></span></summary>
+      <div class="cites" aria-label="Citations per year">
+        <div class="term-head mono"><span>$ scholar citations --by-year</span>${ext(S.links.scholar, "Google Scholar ↗")}</div>
+        <div class="bars mono">${citationRows()}</div>
+      </div>
+    </details>`;
+  // Each year is a row of BINS cells; cells light up one by one and numbers count up when the breakdown opens.
+  const BINS = 40;
+  const citationRows = () => {
+    const rows = Object.entries(C.byYear);
+    const max = Math.max(1, ...rows.map((r) => r[1]));
+    return rows.map(([y, n], r) => {
+      const lit = n > 0 ? Math.max(1, Math.round((n / max) * BINS)) : 0;
+      const cells = Array.from({ length: BINS }, (_, k) =>
+        `<i class="cell${k < lit ? " lit" : ""}${k === lit - 1 ? " tip" : ""}" style="--k:${k};--r:${r}"></i>`).join("");
+      return `<div class="bar-row" title="${n} citations in ${y}"><span class="yr">${y}</span>
+        <span class="cells" aria-hidden="true">${cells}</span><span class="n count" data-to="${n}">${n}</span></div>`;
+    }).join("");
+  };
 
   // ---------- Sections, each shown as a file ----------
   const boldName = (authors) => {
@@ -139,7 +123,7 @@
       <li${i >= 5 ? ' class="old" hidden' : ""}><span class="when mono">${esc(n.date)}</span>
         <span class="what">${n.url ? ext(n.url, esc(n.text)) : esc(n.text)}</span></li>`).join("")}</ol>
       ${S.news.length > 5 ? `<button id="log-more" class="more mono">show ${S.news.length - 5} older</button>` : ""}` },
-    { id: "publications", path: "research/publications.bib", icon: "{}", html:
+    { id: "publications", path: "research/publications.bib", icon: "{}", html: citationsBox() +
       pubs("conference papers", S.conference) + pubs("journal articles", S.journal) +
       pubs("book chapters", S.chapters) + pubs("preprints", S.preprints) },
     { id: "teaching", path: "teaching/courses.yaml", icon: "Y", html: S.teaching.map((t) => `
@@ -166,6 +150,27 @@
       <div class="tab mono"><span class="ic">${s.icon}</span><span class="path-txt">${esc(s.path)}</span>${s.badge ? `<span class="badge">${s.badge}</span>` : ""}</div>
       <div class="body">${s.html}</div>
     </section>`).join("");
+
+  // Play the bins and count-up each time the breakdown is opened.
+  const citesDetails = document.querySelector(".cites-details");
+  citesDetails?.addEventListener("toggle", () => {
+    const box = citesDetails.querySelector(".cites");
+    box.classList.remove("on");
+    if (!citesDetails.open) return;
+    void box.offsetWidth;
+    box.classList.add("on");
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    box.querySelectorAll(".count").forEach((el) => {
+      const to = +el.dataset.to, t0 = performance.now(), dur = 1400;
+      const step = (t) => {
+        const p = Math.min(1, (t - t0) / dur);
+        el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      el.textContent = "0";
+      requestAnimationFrame(step);
+    });
+  });
 
   document.querySelectorAll(".bib-btn").forEach((b) => b.addEventListener("click", () => {
     const box = b.closest(".pub").querySelector(".bib");
