@@ -171,14 +171,14 @@ window.SITE = {
     },
   ],
 
-  // Source: LinkedIn. Each entry: { title, org, place, years, note }
+  // Source: LinkedIn. Each entry: { title, org, place, logo, years, note }; logo = file name in logos/ (without .svg)
   experience: [
-    { title: "Research Assistant", org: "Software Engineering Group, Heidelberg University", place: "Heidelberg, DE", years: "Oct 2025 – present", note: "" },
-    { title: "Research Assistant", org: "University of Bayreuth", place: "Bayreuth, DE", years: "Dec 2024 – Sep 2025", note: "" },
+    { title: "Research Assistant", org: "Software Engineering Group, Heidelberg University", place: "Heidelberg, DE", logo: "heidelberg", years: "Oct 2025 – present", note: "" },
+    { title: "Research Assistant", org: "University of Bayreuth", place: "Bayreuth, DE", logo: "bayreuth", years: "Dec 2024 – Sep 2025", note: "" },
   ],
   education: [
-    { title: "Ph.D., Empirical Software Engineering", org: "Heidelberg University", place: "Heidelberg, DE", years: "Oct 2025 – present", note: "" },
-    { title: "M.Sc., Software Engineering for Information Systems", org: "Free University of Bozen-Bolzano", place: "Bolzano, IT", years: "Sep 2021 – Mar 2024", note: "Thesis: Applying Prompt Engineering to turn LLM into Digital Assistant for Startups" },
+    { title: "Ph.D., Empirical Software Engineering", org: "Heidelberg University", place: "Heidelberg, DE", logo: "heidelberg", years: "Oct 2025 – present", note: "" },
+    { title: "M.Sc., Software Engineering for Information Systems", org: "Free University of Bozen-Bolzano", place: "Bolzano, IT", logo: "unibz", years: "Sep 2021 – Mar 2024", note: "Thesis: Applying Prompt Engineering to turn LLM into Digital Assistant for Startups" },
   ],
 
 };

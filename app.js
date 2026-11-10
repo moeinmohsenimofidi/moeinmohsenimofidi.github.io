@@ -94,7 +94,8 @@
       ${BIB[p.doi] ? `<div class="bib" hidden><button class="bib-copy mono">copy</button><pre class="mono">${esc(BIB[p.doi])}</pre><div class="bib-src mono">source: ${DBLP[p.doi] ? ext(DBLP[p.doi].match(/biburl\s*=\s*\{([^}]*)\.bib\}/)[1], "dblp") : ext("https://doi.org/" + p.doi, "doi.org")}</div></div>` : ""}
     </article>`).join("");
   const entries = (label, list) => !list.length ? "" : `<h3 class="mono">// ${label}</h3>` + list.map((e) => `
-    <div class="entry">
+    <div class="entry${e.logo ? " has-logo" : ""}">
+      ${e.logo ? `<img class="entry-logo" src="logos/${esc(e.logo)}.svg" alt="" aria-hidden="true">` : ""}
       <div><div class="title">${esc(e.title)}</div><div class="sub">${esc(e.org)}${e.note ? " · " + esc(e.note) : ""}</div></div>
       <div class="side mono">${esc(e.years)}<br>${esc(e.place)}</div>
     </div>`).join("");
@@ -261,6 +262,20 @@
       }
     }, { rootMargin: "0px 0px -8% 0px" });
     files.forEach((sec) => io.observe(sec));
+  }
+
+  // ---------- Business card: tilts slightly toward the pointer ----------
+  const card = $("vcard");
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && window.matchMedia("(hover: hover)").matches) {
+    card.addEventListener("pointermove", (e) => {
+      const b = card.getBoundingClientRect();
+      const x = (e.clientX - b.left) / b.width - 0.5, y = (e.clientY - b.top) / b.height - 0.5;
+      card.style.setProperty("--rx", `${(-y * 6).toFixed(2)}deg`);
+      card.style.setProperty("--ry", `${(x * 8).toFixed(2)}deg`);
+      card.style.setProperty("--gx", `${((x + 0.5) * 100).toFixed(0)}%`);
+      card.style.setProperty("--gy", `${((y + 0.5) * 100).toFixed(0)}%`);
+    });
+    card.addEventListener("pointerleave", () => { card.style.setProperty("--rx", "0deg"); card.style.setProperty("--ry", "0deg"); });
   }
 
   // Sections are rendered by this script, so jump to a #hash link after rendering.
