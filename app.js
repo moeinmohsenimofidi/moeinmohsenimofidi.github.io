@@ -34,25 +34,30 @@
   $("c-name").textContent = S.name;
 
   // ---------- Research diagram (README) ----------
-  const fileBox = (y, name) => `<g class="d-file" transform="translate(40 ${y})"><rect width="150" height="30" rx="6"/><text x="12" y="20">${name}</text></g>`;
+  const fileBox = (y, name) => `<g class="d-file" transform="translate(40 ${y})"><rect width="150" height="30" rx="6"/><path class="d-ic" d="M11 8h6l4 4v11h-10z M17 8v4h4"/><text x="30" y="20">${name}</text></g>`;
+  // Paths from each file to the agent; dots travel along them.
+  const FLOWS = [42, 90, 138, 186].map((y, i) => `M190 ${y} C 232 ${y}, 240 ${122 + i * 4}, 280 ${122 + i * 4}`);
+  const pulse = (d, i, dur = 2.4) => `<circle class="d-pulse" r="3"><animateMotion dur="${dur}s" begin="${(i * 0.6).toFixed(1)}s" repeatCount="indefinite" path="${d}"/></circle>`;
   const DIAGRAM = `
     <figure class="diagram">
-      <svg viewBox="0 0 660 240" role="img" aria-labelledby="dg-t">
+      <svg viewBox="0 0 660 250" role="img" aria-labelledby="dg-t">
         <title id="dg-t">Instruction files such as AGENTS.md, CLAUDE.md, SKILL.md, settings and other configuration mechanisms feed into a coding agent, which changes the code. The files can drift from the code and contradict each other.</title>
         <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="d-head"/></marker></defs>
-        ${fileBox(20, "AGENTS.md")}${fileBox(70, "CLAUDE.md")}${fileBox(120, "SKILL.md")}${fileBox(170, "settings.json")}
-        <g class="d-more" aria-label="and other configuration mechanisms"><circle cx="115" cy="212" r="2.2"/><circle cx="115" cy="221" r="2.2"/><circle cx="115" cy="230" r="2.2"/></g>
-        <path class="d-conflict" d="M34 88 h-10 v50 h10"/>
-        <text class="d-label d-bad" x="14" y="113" transform="rotate(-90 14 113)" text-anchor="middle">conflict</text>
-        <path class="d-flow" d="M190 35 C 230 35, 240 108, 280 110" marker-end="url(#arr)"/>
-        <path class="d-flow" d="M190 85 C 230 85, 240 110, 280 112" marker-end="url(#arr)"/>
-        <path class="d-flow" d="M190 135 C 230 135, 240 114, 280 114" marker-end="url(#arr)"/>
-        <path class="d-flow" d="M190 185 C 230 185, 240 116, 280 116" marker-end="url(#arr)"/>
-        <g class="d-agent" transform="translate(282 88)"><rect width="128" height="52" rx="10"/><text x="64" y="23" text-anchor="middle">coding agent</text><text class="d-sub" x="64" y="40" text-anchor="middle">reads the files</text></g>
-        <path class="d-flow" d="M410 114 H478" marker-end="url(#arr)"/>
-        <g class="d-file d-code" transform="translate(480 88)"><rect width="160" height="52" rx="10"/><text x="80" y="23" text-anchor="middle">code &amp; pull requests</text><text class="d-sub" x="80" y="40" text-anchor="middle">src/, tests/</text></g>
-        <path class="d-drift" d="M190 30 C 330 -6, 520 4, 560 86"/>
-        <text class="d-label d-bad" x="375" y="46" text-anchor="middle">drift: stale reference to the code</text>
+        ${fileBox(27, "AGENTS.md")}${fileBox(75, "CLAUDE.md")}${fileBox(123, "SKILL.md")}${fileBox(171, "settings.json")}
+        <g class="d-more" aria-label="and other configuration mechanisms"><circle cx="115" cy="218" r="2.2"/><circle cx="115" cy="227" r="2.2"/><circle cx="115" cy="236" r="2.2"/></g>
+        <path class="d-conflict" d="M34 92 h-10 v46 h10"/>
+        <text class="d-label d-bad" x="14" y="115" transform="rotate(-90 14 115)" text-anchor="middle">conflict</text>
+        ${FLOWS.map((d) => `<path class="d-flow" d="${d}" marker-end="url(#arr)"/>`).join("")}
+        <g class="d-agent" transform="translate(282 100)"><rect width="128" height="56" rx="10"/><circle class="d-live" cx="16" cy="18" r="3.5"/><text x="68" y="24" text-anchor="middle">coding agent</text><text class="d-sub" x="64" y="42" text-anchor="middle">reads the files</text></g>
+        <path class="d-flow" d="M410 128 H478" marker-end="url(#arr)"/>
+        <g class="d-file d-code" transform="translate(480 92)"><rect width="160" height="72" rx="10"/><text x="80" y="22" text-anchor="middle">code &amp; pull requests</text>
+          <g class="d-diff"><text class="d-add" x="14" y="41">+</text><rect class="d-add" x="26" y="35" width="96" height="5" rx="2"/>
+          <text class="d-del" x="14" y="52">−</text><rect class="d-del" x="26" y="46" width="64" height="5" rx="2"/>
+          <text class="d-add" x="14" y="63">+</text><rect class="d-add" x="26" y="57" width="118" height="5" rx="2"/></g></g>
+        <g class="d-pulses">${FLOWS.map((d, i) => pulse(d, i)).join("")}${pulse("M410 128 H476", 1, 1.2)}</g>
+        <path class="d-drift" d="M190 40 C 330 4, 520 14, 556 84"/>
+        <g class="d-warn" transform="translate(560 84)"><circle r="8"/><text y="4" text-anchor="middle">!</text></g>
+        <text class="d-label d-bad" x="375" y="58" text-anchor="middle">drift: stale reference to the code</text>
       </svg>
     </figure>`;
 
@@ -113,17 +118,17 @@
   const BIB = { ...(window.BIBTEX || {}), ...DBLP };
   const T = S.theses;
   const sections = [
-    { id: "about", path: "README.md", icon: "M↓", html: S.about.map((p) => `<p>${esc(p)}</p>`).join("") + DIAGRAM },
-    { id: "news", path: "news/feed.log", icon: "≡", html: !S.news.length
+    { id: "about", label: "About", path: "README.md", icon: "M↓", html: S.about.map((p) => `<p>${esc(p)}</p>`).join("") + DIAGRAM },
+    { id: "news", label: "News", path: "news/feed.log", icon: "≡", html: !S.news.length
       ? `<div class="feed-empty mono"><span class="t-prompt">$ tail -f news/feed.log</span><span>no news yet, check back later</span><span class="cursor"></span></div>`
       : `<ol class="log">${S.news.map((n, i) => `
       <li${i >= 5 ? ' class="old" hidden' : ""}><span class="when mono">${esc(n.date)}</span>
         <span class="what">${n.url ? ext(n.url, esc(n.text)) : esc(n.text)}</span></li>`).join("")}</ol>
       ${S.news.length > 5 ? `<button id="log-more" class="more mono">show ${S.news.length - 5} older</button>` : ""}` },
-    { id: "publications", path: "research/publications.bib", icon: "{}", html:
+    { id: "publications", label: "Publications", path: "research/publications.bib", icon: "{}", html:
       pubs("conference papers", S.conference) + pubs("journal articles", S.journal) +
       pubs("workshop papers", S.workshop) + pubs("book chapters", S.chapters) + pubs("preprints", S.preprints) + citationsBox() },
-    { id: "teaching", path: "teaching/courses.yaml", icon: "Y", html: S.teaching.map((t) => `
+    { id: "teaching", label: "Teaching", path: "teaching/courses.yaml", icon: "Y", html: S.teaching.map((t) => `
       <div class="course">
         <div class="semester mono">${esc(t.term)}</div>
         <div>
@@ -132,8 +137,8 @@
           <div class="sub">${esc(t.role)}</div>
         </div>
       </div>`).join("") },
-    { id: "experience", path: "experience.yaml", icon: "Y", html: entries("experience", S.experience) + entries("education", S.education) },
-    { id: "theses", path: "theses/OPEN_POSITIONS.md", icon: "M↓", badge: "open", html: `
+    { id: "experience", label: "Experience", path: "experience.yaml", icon: "Y", html: entries("experience", S.experience) + entries("education", S.education) },
+    { id: "theses", label: "Theses", path: "theses/OPEN_POSITIONS.md", icon: "M↓", badge: "open", html: `
       <div class="banner"><span class="pulse"></span><strong>Bachelor's and Master's theses</strong><span class="banner-sub">for students at Heidelberg University</span></div>
       <p>${esc(T.intro)}</p>
       <h3 class="mono">## Before you apply</h3>
@@ -147,6 +152,24 @@
       <div class="tab mono"><span class="ic">${s.icon}</span><span class="path-txt">${esc(s.path)}</span>${s.badge ? `<span class="badge">${s.badge}</span>` : ""}</div>
       <div class="body">${s.html}</div>
     </section>`).join("");
+
+  // Top bar: one link per section; the link of the section in view is marked.
+  const navIn = document.querySelector(".topnav-in");
+  navIn.innerHTML = `<span class="nav-links">` +
+    sections.map((s) => `<a href="#${s.id}">${esc(s.label)}</a>`).join("") + "</span>";
+  const navLinks = [...navIn.querySelectorAll(".nav-links a")];
+  const seen = new Map();
+  const markNav = () => {
+    const atEnd = innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
+    const cur = atEnd ? sections[sections.length - 1] : sections.find((s) => seen.get(s.id));
+    navLinks.forEach((a) => a.classList.toggle("on", !!cur && a.hash === "#" + cur.id));
+  };
+  const navObs = new IntersectionObserver((list) => {
+    list.forEach((en) => seen.set(en.target.id, en.isIntersecting));
+    markNav();
+  }, { rootMargin: "-60px 0px -60% 0px" });
+  addEventListener("scroll", markNav, { passive: true });
+  sections.forEach((s) => navObs.observe(document.getElementById(s.id)));
 
   // Play the bins and count-up each time the breakdown is opened.
   const citesDetails = document.querySelector(".cites-details");
@@ -242,7 +265,7 @@
     // README diagram builds up: input files, the dots, arrows, agent, code, then the problems.
     const svg = document.querySelector(".diagram svg");
     if (svg) {
-      const order = [".d-file:not(.d-code)", ".d-more", ".d-flow", ".d-agent", ".d-code", ".d-conflict, .d-drift, .d-bad"];
+      const order = [".d-file:not(.d-code)", ".d-more", ".d-flow", ".d-agent", ".d-code", ".d-pulses", ".d-conflict, .d-drift, .d-warn, .d-bad"];
       let step = 0;
       order.forEach((sel) => {
         const els = [...svg.querySelectorAll(sel)];

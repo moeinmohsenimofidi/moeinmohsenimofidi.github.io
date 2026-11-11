@@ -32,7 +32,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 20px; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
 body {
   margin: 0; background: var(--bg); color: var(--text);
   font: 15px/1.65 Inter, system-ui, -apple-system, sans-serif;
@@ -231,8 +231,20 @@ h1 { margin: 0; font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
 .d-sub { fill: var(--muted) !important; font-size: 10.5px; }
 .d-head { fill: var(--accent); }
 .d-more circle { fill: var(--muted); }
-.d-flow { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-dasharray: 5 5; animation: flow 1.2s linear infinite; }
-@keyframes flow { to { stroke-dashoffset: -20; } }
+.d-flow { fill: none; stroke: var(--accent); stroke-width: 1.4; stroke-opacity: .55; }
+.d-pulse { fill: var(--accent); }
+.d-ic { fill: none; stroke: var(--muted); stroke-width: 1.1; stroke-linejoin: round; }
+.d-file rect { transition: stroke .2s; }
+.d-file:hover rect { stroke: var(--accent-2); }
+.d-live { fill: var(--accent); animation: live 1.6s ease-in-out infinite; }
+@keyframes live { 50% { opacity: .25; } }
+.d-add { fill: var(--accent); fill-opacity: .7; font-size: 10px; }
+.d-del { fill: #f85149; fill-opacity: .7; font-size: 10px; }
+.d-code .d-diff rect, .d-file:hover .d-diff rect { stroke: none; }
+.d-code .d-diff rect.d-add { fill: var(--accent); }
+.d-code .d-diff rect.d-del { fill: #f85149; }
+.d-warn circle { fill: #f85149; }
+.d-warn text { fill: #fff; font-size: 11px; font-weight: 700; }
 .d-drift { fill: none; stroke: #f85149; stroke-width: 1.6; stroke-dasharray: 3 5; }
 .d-conflict { fill: none; stroke: #f85149; stroke-width: 2; }
 .d-label { fill: var(--muted); font-size: 11.5px; }
@@ -252,10 +264,10 @@ h1 { margin: 0; font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
 .pal-foot { padding: 7px 14px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); }
 
 /* colophon footer */
-.colophon { margin-top: 8px; padding: 16px 4px 4px; border-top: 1px dashed var(--border); font-size: 12px; color: var(--muted); }
+.colophon { margin-top: 8px; padding: 16px 4px 4px; border-top: 1px dashed var(--border); font-size: 12px; color: var(--muted); text-align: center; }
 .c-head { display: flex; gap: 8px; align-items: center; letter-spacing: .12em; font-size: 11px; margin-bottom: 8px; }
 .c-head .ic { color: var(--accent); }
-.colophon dl { display: grid; grid-template-columns: auto 1fr; gap: 3px 14px; margin: 0; }
+.colophon dl { display: flex; justify-content: center; flex-wrap: wrap; gap: 3px 8px; margin: 0; }
 .colophon dt { color: var(--accent-3); }
 .colophon dt::before { content: "// "; color: var(--border); }
 .colophon dd { margin: 0; }
@@ -294,12 +306,26 @@ h1 { margin: 0; font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
   .entry.has-logo .side { grid-column: 2; }
   .entry-logo { width: 48px; height: 34px; padding: 3px 4px; }
   .entry .side { text-align: left; }
-  .colophon dl { grid-template-columns: 1fr; gap: 0; }
-  .colophon dd { margin-bottom: 6px; }
   .log li { grid-template-columns: 1fr; gap: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .pulse, .cursor, .d-flow { animation: none; }
+  .pulse, .cursor, .d-live { animation: none; }
+  .d-pulses { display: none; }
   .cites.on .cell.lit, .cites.on .cell.tip { animation: none; }
+}
+
+/* top navigation bar */
+.topnav { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+.topnav-in { max-width: 960px; margin: 0 auto; padding: 0 28px; height: 48px; display: flex; align-items: center; gap: 24px; }
+.nav-links { display: flex; gap: 4px; margin: 0 auto; overflow-x: auto; scrollbar-width: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a { padding: 6px 10px; border-radius: 8px; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; }
+.nav-links a:hover { color: var(--text); background: var(--panel); }
+.nav-links a.on { color: var(--text); background: var(--panel); }
+@media (max-width: 640px) {
+  .topnav-in { padding: 0 8px; }
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 4px; font-size: 12.5px; }
 }
