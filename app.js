@@ -34,23 +34,24 @@
   $("c-name").textContent = S.name;
 
   // ---------- Research diagram (README) ----------
-  const fileBox = (y, name) => `<g class="d-file" transform="translate(40 ${y})"><rect width="150" height="30" rx="6"/><path class="d-ic" d="M11 8h6l4 4v11h-10z M17 8v4h4"/><text x="30" y="20">${name}</text></g>`;
+  const fileBox = (y, name) => `<g class="d-file" transform="translate(40 ${y})"><rect class="d-side" x="4" y="5" width="150" height="30" rx="6"/><rect width="150" height="30" rx="6"/><path class="d-ic" d="M11 8h6l4 4v11h-10z M17 8v4h4"/><text x="30" y="20">${name}</text></g>`;
   // Paths from each file to the agent; dots travel along them.
   const FLOWS = [42, 90, 138, 186].map((y, i) => `M190 ${y} C 232 ${y}, 240 ${122 + i * 4}, 280 ${122 + i * 4}`);
   const pulse = (d, i, dur = 2.4) => `<circle class="d-pulse" r="3"><animateMotion dur="${dur}s" begin="${(i * 0.6).toFixed(1)}s" repeatCount="indefinite" path="${d}"/></circle>`;
   const DIAGRAM = `
     <figure class="diagram">
-      <svg viewBox="0 0 660 250" role="img" aria-labelledby="dg-t">
+      <svg viewBox="0 0 660 256" role="img" aria-labelledby="dg-t">
         <title id="dg-t">Instruction files such as AGENTS.md, CLAUDE.md, SKILL.md, settings and other configuration mechanisms feed into a coding agent, which changes the code. The files can drift from the code and contradict each other.</title>
-        <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="d-head"/></marker></defs>
+        <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="d-head"/></marker><pattern id="dg-grid" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="8" cy="8" r="1" class="d-grid"/></pattern></defs>
+        <rect class="d-floor" x="2" y="2" width="656" height="252" rx="12" fill="url(#dg-grid)"/>
         ${fileBox(27, "AGENTS.md")}${fileBox(75, "CLAUDE.md")}${fileBox(123, "SKILL.md")}${fileBox(171, "settings.json")}
         <g class="d-more" aria-label="and other configuration mechanisms"><circle cx="115" cy="218" r="2.2"/><circle cx="115" cy="227" r="2.2"/><circle cx="115" cy="236" r="2.2"/></g>
         <path class="d-conflict" d="M34 92 h-10 v46 h10"/>
         <text class="d-label d-bad" x="14" y="115" transform="rotate(-90 14 115)" text-anchor="middle">conflict</text>
         ${FLOWS.map((d) => `<path class="d-flow" d="${d}" marker-end="url(#arr)"/>`).join("")}
-        <g class="d-agent" transform="translate(282 100)"><rect width="128" height="56" rx="10"/><circle class="d-live" cx="16" cy="18" r="3.5"/><text x="68" y="24" text-anchor="middle">coding agent</text><text class="d-sub" x="64" y="42" text-anchor="middle">reads the files</text></g>
+        <g class="d-agent" transform="translate(282 100)"><rect class="d-side" x="5" y="6" width="128" height="56" rx="10"/><rect width="128" height="56" rx="10"/><circle class="d-live" cx="16" cy="18" r="3.5"/><text x="68" y="24" text-anchor="middle">coding agent</text><text class="d-sub" x="64" y="42" text-anchor="middle">reads the files</text></g>
         <path class="d-flow" d="M410 128 H478" marker-end="url(#arr)"/>
-        <g class="d-file d-code" transform="translate(480 92)"><rect width="160" height="72" rx="10"/><text x="80" y="22" text-anchor="middle">code &amp; pull requests</text>
+        <g class="d-file d-code" transform="translate(480 92)"><rect class="d-side" x="5" y="6" width="160" height="72" rx="10"/><rect width="160" height="72" rx="10"/><text x="80" y="22" text-anchor="middle">code &amp; pull requests</text>
           <g class="d-diff"><text class="d-add" x="14" y="41">+</text><rect class="d-add" x="26" y="35" width="96" height="5" rx="2"/>
           <text class="d-del" x="14" y="52">−</text><rect class="d-del" x="26" y="46" width="64" height="5" rx="2"/>
           <text class="d-add" x="14" y="63">+</text><rect class="d-add" x="26" y="57" width="118" height="5" rx="2"/></g></g>
@@ -113,6 +114,25 @@
       <div class="side mono">${esc(e.years)}<br>${esc(e.place)}</div>
     </div>`).join("");
 
+  // News as a timeline: filter chips by type, a year marker whenever the year changes, the first 5 items shown.
+  const NEWS_SHOWN = 5;
+  const newsFeed = () => {
+    const types = [...new Set(S.news.map((n) => n.type).filter(Boolean))];
+    const chips = `<div class="news-filter mono" role="group" aria-label="Filter news">` +
+      [["all", S.news.length], ...types.map((t) => [t, S.news.filter((n) => n.type === t).length])]
+        .map(([t, c], i) => `<button class="chip t-${t}" data-type="${t}" aria-pressed="${i === 0}">${t} <span>${c}</span></button>`).join("") + "</div>";
+    let year = "";
+    const items = S.news.map((n, i) => {
+      const y = n.date.slice(-4), mark = y !== year ? `<li class="yr-mark mono" data-year="${y}">${y}</li>` : "";
+      year = y;
+      return mark + `<li class="item" data-type="${esc(n.type || "")}" data-year="${y}"${i >= NEWS_SHOWN ? " hidden" : ""}>
+        <span class="when mono">${esc(n.date.replace(/ \d{4}$/, ""))}</span>
+        <span class="what">${n.type ? `<span class="tag mono t-${esc(n.type)}">${esc(n.type)}</span>` : ""}${n.url ? ext(n.url, esc(n.text)) : esc(n.text)}</span></li>`;
+    }).join("");
+    const more = S.news.length > NEWS_SHOWN ? `<button id="log-more" class="more mono">show ${S.news.length - NEWS_SHOWN} older</button>` : "";
+    return chips + `<ol class="log">${items}</ol>` + more;
+  };
+
   // dblp entries where dblp has the paper, doi.org entries otherwise.
   const DBLP = window.DBLP_BIBTEX || {};
   const BIB = { ...(window.BIBTEX || {}), ...DBLP };
@@ -121,10 +141,7 @@
     { id: "about", label: "About", path: "README.md", icon: "M↓", html: S.about.map((p) => `<p>${esc(p)}</p>`).join("") + DIAGRAM },
     { id: "news", label: "News", path: "news/feed.log", icon: "≡", html: !S.news.length
       ? `<div class="feed-empty mono"><span class="t-prompt">$ tail -f news/feed.log</span><span>no news yet, check back later</span><span class="cursor"></span></div>`
-      : `<ol class="log">${S.news.map((n, i) => `
-      <li${i >= 5 ? ' class="old" hidden' : ""}><span class="when mono">${esc(n.date)}</span>
-        <span class="what">${n.url ? ext(n.url, esc(n.text)) : esc(n.text)}</span></li>`).join("")}</ol>
-      ${S.news.length > 5 ? `<button id="log-more" class="more mono">show ${S.news.length - 5} older</button>` : ""}` },
+      : newsFeed() },
     { id: "publications", label: "Publications", path: "research/publications.bib", icon: "{}", html:
       pubs("conference papers", S.conference) + pubs("journal articles", S.journal) +
       pubs("workshop papers", S.workshop) + pubs("book chapters", S.chapters) + pubs("preprints", S.preprints) + citationsBox() },
@@ -203,10 +220,31 @@
     setTimeout(() => (btn.textContent = "copy"), 1500);
   };
   document.querySelectorAll(".bib-copy").forEach((b) => b.addEventListener("click", () => copyText(b, b.nextElementSibling.textContent)));
-  $("log-more")?.addEventListener("click", (e) => {
-    document.querySelectorAll(".log .old").forEach((li) => (li.hidden = false));
-    e.target.remove();
-  });
+  // News: show only one type, or all; year markers without visible items are hidden.
+  const newsLog = document.querySelector(".log");
+  let newsType = "all", newsAll = false;
+  const showNews = () => {
+    let shownCount = 0;
+    newsLog.querySelectorAll(".item").forEach((li) => {
+      const match = newsType === "all" || li.dataset.type === newsType;
+      li.hidden = !match || (newsType === "all" && !newsAll && shownCount >= NEWS_SHOWN);
+      if (match) shownCount++;
+    });
+    newsLog.querySelectorAll(".yr-mark").forEach((m) => {
+      m.hidden = ![...newsLog.querySelectorAll(`.item[data-year="${m.dataset.year}"]`)].some((li) => !li.hidden);
+    });
+    const more = $("log-more");
+    if (more) more.hidden = newsAll || newsType !== "all";
+  };
+  if (newsLog) {
+    showNews();
+    document.querySelectorAll(".news-filter .chip").forEach((c) => c.addEventListener("click", () => {
+      newsType = c.dataset.type;
+      document.querySelectorAll(".news-filter .chip").forEach((o) => o.setAttribute("aria-pressed", String(o === c)));
+      showNews();
+    }));
+    $("log-more")?.addEventListener("click", () => { newsAll = true; showNews(); });
+  }
 
   // ---------- Command palette (⌘K, Ctrl+K or /) ----------
   const allPubs = [...S.conference, ...S.journal, ...S.workshop, ...S.chapters, ...S.preprints];
@@ -296,6 +334,18 @@
       }
     }, { rootMargin: "0px 0px -8% 0px" });
     files.forEach((sec) => io.observe(sec));
+  }
+
+  // ---------- README diagram: tilts toward the pointer, like a board lying on a table ----------
+  const dg = document.querySelector(".diagram");
+  if (dg && !window.matchMedia("(prefers-reduced-motion: reduce)").matches && window.matchMedia("(hover: hover)").matches) {
+    dg.addEventListener("pointermove", (e) => {
+      const b = dg.getBoundingClientRect();
+      const x = (e.clientX - b.left) / b.width - 0.5, y = (e.clientY - b.top) / b.height - 0.5;
+      dg.style.setProperty("--dx", `${(22 - y * 12).toFixed(2)}deg`);
+      dg.style.setProperty("--dy", `${(x * 12).toFixed(2)}deg`);
+    });
+    dg.addEventListener("pointerleave", () => { dg.style.removeProperty("--dx"); dg.style.removeProperty("--dy"); });
   }
 
   // ---------- Business card: tilts slightly toward the pointer ----------

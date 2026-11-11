@@ -48,11 +48,20 @@ window.SITE = {
       "I teach seminars and practical courses at Heidelberg University and, before that, at the University of Bayreuth.",
   ],
 
-
-  // News feed, newest first. Add an entry at the top whenever you have news, e.g.
-  //   { date: "2026-11-20", text: "Paper accepted at ICSE 2027.", url: "https://..." },
-  // url is optional. While the list is empty, the page shows an empty feed.
-  news: [],
+  // News, newest first. Each entry: { date, type, text, url }. type is one of paper, talk, teaching, career
+  // (shown as a tag); url is optional. The first 5 entries are shown, the rest behind "show older".
+  // Sources: dblp (conference dates), https://empirical-software.engineering/talks/, LinkedIn.
+  news: [
+    { date: "Oct 2026", type: "paper", text: "Paper at ESEM 2026 in Munich: An Exploratory Study of Agent Plans for Agentic AI Coding Tools in Open-Source Software.", url: "https://doi.org/10.4230/LIPIcs.ESEM.2026.54" },
+    { date: "Oct 2026", type: "teaching", text: "Teaching the Research Seminar: Agentic Software Engineering at Heidelberg University (winter semester 2026/27)." },
+    { date: "Jul 2026", type: "paper", text: "Two papers at AIware 2026 in Montreal: an exploratory study of how developers configure agentic AI coding tools, and a dataset of these configurations.", url: "https://se-uhd.de/ai-config-dataset/" },
+    { date: "Apr 2026", type: "talk", text: "Presented Context Engineering for AI Agents in Open-Source Software at MSR 2026 in Rio de Janeiro.", url: "https://assets.empirical-software.engineering/pdf/msr26-context-engineering-slides.pdf" },
+    { date: "Apr 2026", type: "paper", text: "Paper at JAWs@ICSE 2026: On the Impact of AGENTS.md Files on the Efficiency of AI Coding Agents.", url: "https://arxiv.org/abs/2601.20404" },
+    { date: "Apr 2026", type: "paper", text: "Published in IEEE Transactions on Software Engineering: On the Need to Rethink Trust in AI Assistants for Software Development.", url: "https://doi.org/10.1109/TSE.2026.3659804" },
+    { date: "Apr 2026", type: "teaching", text: "Teaching the practical course Context Engineering for Agentic AI Coding Tools at Heidelberg University (summer semester 2026)." },
+    { date: "Oct 2025", type: "career", text: "Started my PhD in the Software Engineering Group of Prof. Dr. Sebastian Baltes at Heidelberg University.", url: "https://se-uhd.de/" },
+    { date: "Dec 2024", type: "career", text: "Joined the University of Bayreuth as a research assistant." },
+  ],
 
   // Footer: how the site was made. Each entry is [label, text, optional url].
   colophon: [

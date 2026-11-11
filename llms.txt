@@ -28,6 +28,18 @@ I am a doctoral researcher in the Software Engineering Group of Prof. Dr. Sebast
 
 Citations (Google Scholar, as of 10 Nov 2026): 192, h-index 6, i10-index 5.
 
+## News
+
+- Oct 2026: Paper at ESEM 2026 in Munich: An Exploratory Study of Agent Plans for Agentic AI Coding Tools in Open-Source Software. https://doi.org/10.4230/LIPIcs.ESEM.2026.54
+- Oct 2026: Teaching the Research Seminar: Agentic Software Engineering at Heidelberg University (winter semester 2026/27).
+- Jul 2026: Two papers at AIware 2026 in Montreal: an exploratory study of how developers configure agentic AI coding tools, and a dataset of these configurations. https://se-uhd.de/ai-config-dataset/
+- Apr 2026: Presented Context Engineering for AI Agents in Open-Source Software at MSR 2026 in Rio de Janeiro. https://assets.empirical-software.engineering/pdf/msr26-context-engineering-slides.pdf
+- Apr 2026: Paper at JAWs@ICSE 2026: On the Impact of AGENTS.md Files on the Efficiency of AI Coding Agents. https://arxiv.org/abs/2601.20404
+- Apr 2026: Published in IEEE Transactions on Software Engineering: On the Need to Rethink Trust in AI Assistants for Software Development. https://doi.org/10.1109/TSE.2026.3659804
+- Apr 2026: Teaching the practical course Context Engineering for Agentic AI Coding Tools at Heidelberg University (summer semester 2026).
+- Oct 2025: Started my PhD in the Software Engineering Group of Prof. Dr. Sebastian Baltes at Heidelberg University. https://se-uhd.de/
+- Dec 2024: Joined the University of Bayreuth as a research assistant.
+
 ## Publications
 
 ### Conference papers
