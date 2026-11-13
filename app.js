@@ -246,9 +246,32 @@
     $("log-more")?.addEventListener("click", () => { newsAll = true; showNews(); });
   }
 
+  // ---------- Landing: only the card until "show full profile" is clicked ----------
+  // The card slides from the middle of the screen to the top; the nav bar and sections fade in below it.
+  // Each visit starts at the card, so the browser should not restore an old scroll position.
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  const expandBtn = $("expand");
+  function expand(animate = true) {
+    if (!document.body.classList.contains("landing")) return;
+    const hero = document.querySelector(".hero");
+    const before = hero.getBoundingClientRect().top;
+    document.body.classList.remove("landing");
+    expandBtn?.setAttribute("aria-expanded", "true");
+    window.scrollTo({ top: 0, behavior: "instant" });
+    markNav();
+    $("human").focus({ preventScroll: true });
+    if (!animate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const after = hero.getBoundingClientRect().top;
+    hero.animate([{ transform: `translateY(${before - after}px)` }, { transform: "none" }],
+      { duration: 650, easing: "cubic-bezier(.2, .8, .2, 1)" });
+    document.body.classList.add("opening");
+    setTimeout(() => document.body.classList.remove("opening"), 1200);
+  }
+  expandBtn?.addEventListener("click", () => expand());
+
   // ---------- Command palette (⌘K, Ctrl+K or /) ----------
   const allPubs = [...S.conference, ...S.journal, ...S.workshop, ...S.chapters, ...S.preprints];
-  const go = (id) => () => $(id).scrollIntoView({ behavior: "smooth" });
+  const go = (id) => () => { expand(false); $(id).scrollIntoView({ behavior: "smooth" }); };
   const open = (url) => () => window.open(url, "_blank", "noopener");
   const commands = [
     ...sections.map((s) => ({ label: `open ${s.path}`, hint: "section", run: go(s.id) })),
@@ -363,5 +386,5 @@
   }
 
   // Sections are rendered by this script, so jump to a #hash link after rendering.
-  if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
+  if (location.hash && document.querySelector(location.hash)) { expand(false); document.querySelector(location.hash).scrollIntoView(); }
 })();
