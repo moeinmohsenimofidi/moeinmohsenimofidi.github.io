@@ -138,7 +138,7 @@
   const BIB = { ...(window.BIBTEX || {}), ...DBLP };
   const T = S.theses;
   const sections = [
-    { id: "about", label: "About", path: "README.md", icon: "M↓", html: S.about.map((p) => `<p>${esc(p)}</p>`).join("") + DIAGRAM },
+    { id: "about", label: "About", path: "README.md", icon: "M↓", html: S.about.map((p) => `<p>${esc(p)}</p>`).join("") /* + DIAGRAM (hidden for now) */ },
     { id: "news", label: "News", path: "news/feed.log", icon: "≡", html: !S.news.length
       ? `<div class="feed-empty mono"><span class="t-prompt">$ tail -f news/feed.log</span><span>no news yet, check back later</span><span class="cursor"></span></div>`
       : newsFeed() },
