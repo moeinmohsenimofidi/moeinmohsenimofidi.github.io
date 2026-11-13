@@ -357,16 +357,37 @@ h1 { margin: 0; font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
 }
 
 /* landing: only the card, centered, until "show full profile" is clicked */
-.expand { display: none; justify-self: center; margin-top: 6px; padding: 8px 16px; border: 1px solid var(--border); border-radius: 999px;
-  background: var(--panel); color: var(--muted); font-size: 13px; cursor: pointer; transition: color .2s, border-color .2s; }
-.expand:hover, .expand:focus-visible { color: var(--accent); border-color: var(--accent); }
-.expand span { display: inline-block; margin-left: 4px; }
+/* "Show full profile": Inter like the name on the card, with a turning red-gold border like the photo ring */
+@property --spin { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+.expand { display: none; justify-self: center; margin-top: 14px; padding: 12px 22px 12px 26px; border-radius: 999px;
+  border: 1.5px solid transparent; cursor: pointer; font: 600 15px/1 Inter, system-ui, sans-serif; letter-spacing: .01em; color: var(--text);
+  background: linear-gradient(var(--panel), var(--panel)) padding-box,
+              conic-gradient(from var(--spin), #c4122f, #e8a33d, #5a0f09, #c4122f) border-box;
+  box-shadow: 0 0 0 0 rgba(196, 18, 47, 0);
+  transition: transform .25s cubic-bezier(.2, .8, .2, 1), box-shadow .25s ease, color .2s; }
+.expand .arr { display: inline-grid; place-items: center; width: 24px; height: 24px; margin-left: 10px; border-radius: 50%;
+  background: #c4122f; color: #fff; font-size: 13px; vertical-align: middle; transition: transform .25s cubic-bezier(.2, .8, .2, 1); }
+.expand:hover, .expand:focus-visible { transform: translateY(-2px); box-shadow: 0 8px 28px -6px rgba(196, 18, 47, .55); outline: none; }
+.expand:hover .arr, .expand:focus-visible .arr { transform: translateY(3px); }
+.expand:active { transform: translateY(0) scale(.96); }
 .landing .expand { display: inline-block; }
 .landing .topnav, .landing #human, .landing .colophon { display: none; }
 .landing main { min-height: 100vh; min-height: 100svh; justify-content: center; }
-.anim.landing .expand span { animation: nudge 1.6s ease-in-out infinite; }
+.anim.landing .expand { animation: expand-in .7s .9s cubic-bezier(.2, .8, .2, 1) backwards, spin 6s linear infinite, glow 2.8s 1.6s ease-in-out infinite; }
+.anim.landing .expand .arr { animation: nudge 1.6s 1.6s ease-in-out infinite; }
+.anim.landing .expand:hover .arr { animation: none; }
+@keyframes expand-in { from { opacity: 0; transform: translateY(14px) scale(.94); filter: blur(4px); } }
+@keyframes spin { to { --spin: 360deg; } }
+@keyframes glow { 50% { box-shadow: 0 0 22px -4px rgba(196, 18, 47, .45); } }
 @keyframes nudge { 50% { transform: translateY(3px); } }
 .opening .topnav { animation: nav-in .5s .15s cubic-bezier(.2, .8, .2, 1) both; }
 .opening #human, .opening .colophon { animation: hero-in .7s .3s cubic-bezier(.2, .8, .2, 1) both; }
 @keyframes nav-in { from { opacity: 0; transform: translateY(-100%); } }
 #human:focus { outline: none; }
+/* landing: photo at double size (320px, capped to fit narrow phones); shrinks back when the profile opens */
+.avatar { transition: width .65s cubic-bezier(.2, .8, .2, 1), height .65s cubic-bezier(.2, .8, .2, 1); }
+.landing .avatar { width: min(320px, 100vw - 92px); height: min(320px, 100vw - 92px); }
+@media (prefers-reduced-motion: reduce) { .avatar { transition: none; } }
+/* live background (bg.js): fixed behind everything, fainter once the profile is open */
+.bg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: .75; transition: opacity 1.2s ease; }
+body:not(.landing) .bg { opacity: .4; }
