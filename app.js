@@ -72,6 +72,7 @@
       <div class="cites" aria-label="Citations per year">
         <div class="term-head mono"><span>$ scholar citations --by-year</span>${ext(S.links.scholar, "Google Scholar ↗")}</div>
         <div class="bars mono">${citationRows()}</div>
+        ${C.byMonth ? monthChart() : ""}
       </div>
     </details>`;
   // Each year is a row of BINS cells; cells light up one by one and numbers count up when the breakdown opens.
@@ -86,6 +87,31 @@
       return `<div class="bar-row" title="${n} citations in ${y}"><span class="yr">${y}</span>
         <span class="cells" aria-hidden="true">${cells}</span><span class="n count" data-to="${n}">${n}</span></div>`;
     }).join("");
+  };
+
+  // Last 12 months as columns of the same cells, lighting up after the yearly rows. Counts come from OpenAlex
+  // (citing papers by publication month), because Google Scholar only reports citations per year.
+  const LEVELS = 10;
+  const monthChart = () => {
+    const now = new Date(), months = [];
+    for (let i = 11; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      months.push({ d, n: C.byMonth[key] || 0, partial: i === 0 });
+    }
+    const max = Math.max(1, ...months.map((m) => m.n)), start = Object.keys(C.byYear).length;
+    const cols = months.map(({ d, n, partial }, c) => {
+      const lit = n > 0 ? Math.max(1, Math.round((n / max) * LEVELS)) : 0;
+      const label = d.toLocaleString("en", { month: "short" }) + (partial ? "*" : "");
+      const when = d.toLocaleString("en", { month: "long", year: "numeric" });
+      const cells = Array.from({ length: LEVELS }, (_, k) =>
+        `<i class="cell${k < lit ? " lit" : ""}${k === lit - 1 ? " tip" : ""}" style="--k:${k};--r:${start + c * 0.25}"></i>`).join("");
+      return `<div class="mcol" title="${n} citing papers published in ${when}${partial ? " (so far)" : ""}">
+        <span class="n count" data-to="${n}">${n}</span><span class="mcells" aria-hidden="true">${cells}</span>
+        <span class="mo">${label}</span><span class="myr">${c === 0 || d.getMonth() === 0 ? d.getFullYear() : ""}</span></div>`;
+    }).join("");
+    return `<div class="term-head mono months-head"><span>$ openalex citations --by-month</span>${ext("https://openalex.org", "OpenAlex ↗")}</div>
+      <div class="months mono" aria-label="Citations per month, last 12 months">${cols}</div>`;
   };
 
   // ---------- Sections, each shown as a file ----------

@@ -36,9 +36,10 @@ window.SITE = {
 
   // Copied by hand from Google Scholar (it has no public API). Update these numbers when you want the chart to change.
   citations: {
-    asOf: "10 Nov 2026", // shown only in llms.txt
-    total: 192, hIndex: 6, i10: 5,
-    byYear: { 2025: 5, 2026: 186 },
+    asOf: "16 Nov 2026", // shown only in llms.txt
+    total: 201, hIndex: 6, i10: 5,
+    byYear: { 2025: 5, 2026: 194 },
+    byMonth: { "2025-01": 1, "2025-07": 1, "2025-11": 2, "2025-12": 1, "2026-01": 17, "2026-02": 3, "2026-03": 4, "2026-04": 4, "2026-05": 4, "2026-06": 10, "2026-07": 17, "2026-08": 12, "2026-09": 22, "2026-10": 37, "2026-11": 9 }, // OpenAlex, citing papers per publication month
   },
 
   about: [

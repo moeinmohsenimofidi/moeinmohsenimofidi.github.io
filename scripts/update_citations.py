@@ -1,13 +1,18 @@
-"""Update the citation numbers in content.js from the public Google Scholar profile.
+"""Update the citation numbers in content.js from the public Google Scholar profile,
+and the monthly citation counts from OpenAlex.
 
 Usage: python3 scripts/update_citations.py
 Exits with an error (and changes nothing) if the profile page cannot be read or parsed,
 for example when Google Scholar answers with a CAPTCHA page.
+Google Scholar only reports citations per year. For the monthly chart, OpenAlex lists the
+papers that cite each publication with their publication date; they are counted per month.
+If OpenAlex cannot be read, the monthly counts already in content.js are kept.
 """
 import datetime
 import json
 import re
 import sys
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -49,17 +54,41 @@ def parse(html: str) -> dict:
     return {"total": total, "hIndex": h_index, "i10": i10, "byYear": by_year}
 
 
+def openalex_by_month() -> dict:
+    """Citing papers per month (YYYY-MM), summed over all publications in content.js, like Scholar's total."""
+    dois = re.findall(r'doi: "([^"]+)"', CONTENT.read_text())
+    months: dict = {}
+    for doi in dois:
+        work = json.loads(fetch("https://api.openalex.org/works/doi:" + urllib.parse.quote(doi)))
+        wid = work["id"].rsplit("/", 1)[-1]
+        cursor = "*"
+        while cursor:
+            page = json.loads(fetch(f"https://api.openalex.org/works?filter=cites:{wid}&select=publication_date&per-page=200&cursor={cursor}"))
+            for r in page["results"]:
+                if r.get("publication_date"):
+                    m = r["publication_date"][:7]
+                    months[m] = months.get(m, 0) + 1
+            cursor = page["meta"].get("next_cursor") if page["results"] else None
+    return dict(sorted(months.items()))
+
+
 def write(c: dict) -> None:
     as_of = datetime.date.today().strftime("%-d %b %Y")
     by_year = ", ".join(f"{y}: {n}" for y, n in sorted(c["byYear"].items()) if n > 0)
+    text = CONTENT.read_text()
+    if c.get("byMonth") is not None:
+        by_month = "    byMonth: { " + ", ".join(f'"{m}": {n}' for m, n in c["byMonth"].items()) + " }, // OpenAlex, citing papers per publication month\n"
+    else:  # OpenAlex failed: keep the previous line
+        old = re.search(r"^    byMonth: .*\n", text, flags=re.M)
+        by_month = old.group(0) if old else ""
     block = (
         "  citations: {\n"
         f'    asOf: "{as_of}", // shown only in llms.txt\n'
         f'    total: {c["total"]}, hIndex: {c["hIndex"]}, i10: {c["i10"]},\n'
         f"    byYear: {{ {by_year} }},\n"
+        + by_month +
         "  },"
     )
-    text = CONTENT.read_text()
     new, n = re.subn(r"  citations: \{\n.*?\n  \},", block, text, count=1, flags=re.S)
     if n != 1:
         sys.exit("Could not find the citations block in content.js.")
@@ -75,5 +104,9 @@ if __name__ == "__main__":
         data = parse(fetch(scholar_url()))
     except Exception as e:  # network error, CAPTCHA, layout change
         sys.exit(f"Google Scholar update failed: {e}")
+    try:
+        data["byMonth"] = openalex_by_month()
+    except Exception as e:
+        print(f"OpenAlex monthly counts failed, keeping the old ones: {e}", file=sys.stderr)
     print(json.dumps(data))
     write(data)

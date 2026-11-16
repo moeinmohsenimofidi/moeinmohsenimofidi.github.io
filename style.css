@@ -391,3 +391,18 @@ h1 { margin: 0; font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
 /* live background (bg.js): fixed behind everything, fainter once the profile is open */
 .bg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: .75; transition: opacity 1.2s ease; }
 body:not(.landing) .bg { opacity: .4; }
+
+/* monthly citations: columns of the same cells as the yearly rows */
+.months-head { border-top: 1px solid #1d2330; }
+.months { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 6px; padding: 12px 14px 10px; font-size: 11px; color: #c9d1d9; }
+.mcol { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; }
+.mcol .n { text-align: center; }
+.mcells { display: flex; flex-direction: column-reverse; gap: 2px; width: 100%; max-width: 26px; height: 96px; }
+.mcells .cell { flex: 1; }
+.mcol:hover .cell.lit { background: #a8f0ad; }
+.mo { color: #8b93a5; font-size: 10px; }
+.myr { color: #5b6273; font-size: 9.5px; min-height: 1.2em; }
+@media (max-width: 640px) {
+  .months { gap: 3px; padding: 10px 8px 8px; }
+  .mo { font-size: 9px; }
+}
