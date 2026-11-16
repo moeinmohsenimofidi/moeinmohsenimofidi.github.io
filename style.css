@@ -65,8 +65,10 @@ main { padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 22px
   box-shadow: 0 1px 0 rgba(255, 255, 255, .6) inset, 0 18px 40px rgba(0, 0, 0, .28), 0 2px 6px rgba(0, 0, 0, .12);
   transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .25s ease-out; transform-style: preserve-3d;
 }
-.vc-logo { position: absolute; top: 20px; right: 24px; width: 150px; height: auto; }
-.vc-top { display: flex; gap: 24px; align-items: center; padding-right: 160px; }
+.vc-logos { position: absolute; top: 20px; right: 24px; display: flex; flex-direction: column; align-items: center; gap: 34px; }
+.vc-logo { display: block; width: 190px; height: auto; }
+.vc-logo-se { width: 150px; }
+.vc-top { display: flex; gap: 24px; align-items: center; padding-right: 196px; min-height: 196px; }
 .who { min-width: 0; }
 .vcard h1 { color: var(--ink); }
 .vcard .role { color: var(--ink-2); }
@@ -322,8 +324,10 @@ h1 { margin: 0; font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
 @media (max-width: 760px) {
   main { padding: 16px 16px 32px; }
   .vcard { padding: 20px 18px 24px; }
-  .vc-logo { width: 96px; top: 14px; right: 14px; }
-  .vc-top { flex-direction: column; align-items: flex-start; padding-right: 0; gap: 14px; }
+  .vc-logos { position: static; flex-direction: row; align-items: center; justify-content: space-between; gap: 40px; margin-bottom: 14px; }
+  .vc-logo { width: 120px; }
+  .vc-logo-se { width: 100px; }
+  .vc-top { flex-direction: column; align-items: flex-start; padding-right: 0; gap: 14px; min-height: 0; }
   .vc-bottom { flex-direction: column; align-items: flex-start; }
   .body { padding: 16px; }
   .course { grid-template-columns: 1fr; gap: 2px; }
