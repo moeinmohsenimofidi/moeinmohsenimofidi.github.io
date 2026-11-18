@@ -108,7 +108,7 @@ window.SITE = {
       venue: "MSR 2026", year: 2026,
       doi: "10.1145/3793302.3793350", arxiv: "2510.21413",
       accept: "30% (48/158)",
-      extra: [["slides", "https://assets.empirical-software.engineering/pdf/msr26-context-engineering-slides.pdf"], ["supplement", "https://doi.org/10.5281/zenodo.17428770"]],
+      extra: [["supplement", "https://doi.org/10.5281/zenodo.17428770"]],
     },
   ],
 
