@@ -170,7 +170,8 @@
       : newsFeed() },
     { id: "publications", label: "Publications", path: "research/publications.bib", icon: "{}", html:
       pubs("conference papers", S.conference) + pubs("journal articles", S.journal) +
-      pubs("workshop papers", S.workshop) + pubs("book chapters", S.chapters) + pubs("preprints", S.preprints) + citationsBox() },
+      pubs("workshop papers", S.workshop) + pubs("book chapters", S.chapters) + pubs("preprints", S.preprints) + citationsBox() +
+      `<aside class="pub-notice" aria-label="Copyright notice"><div class="pn-head mono"><span class="pn-icon" aria-hidden="true">©</span>copyright notice</div><p>The documents available here are provided by their authors for timely, noncommercial dissemination of scholarly work. All copyrights remain with their respective holders. Users must comply with applicable copyright restrictions, and redistribution or reposting requires explicit permission from the copyright holder.</p></aside>` },
     { id: "teaching", label: "Teaching", path: "teaching/courses.yaml", icon: "Y", html: S.teaching.map((t) => `
       <div class="course">
         <div class="semester mono">${esc(t.term)}</div>
