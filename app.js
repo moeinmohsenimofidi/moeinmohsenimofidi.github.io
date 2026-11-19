@@ -188,7 +188,7 @@
       <h3 class="mono">## Before you apply</h3>
       <ul class="checks mono-list">${T.requirements.map((t) => `<li><span class="box mono">[ ]</span>${esc(t)}</li>`).join("")}</ul>
       <p class="muted">${esc(T.note)}</p>
-      <a class="cta mono" href="${esc(T.guidelines)}" target="_blank" rel="noopener">$ thesis guidelines ↗</a>` },
+      <a class="cta mono" href="${esc(T.guidelines)}" target="_blank" rel="noopener"><span><span class="prompt">$</span> open thesis guidelines</span><span class="go" aria-hidden="true">↗</span></a>` },
   ].filter((s) => s.html.trim());
 
   $("human").innerHTML = sections.map((s) => `
