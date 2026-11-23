@@ -126,8 +126,8 @@ main { padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 22px
 .cell { border-radius: 2px; background: #1a2030; }
 .cell.lit { background: #7ee787; box-shadow: 0 0 6px rgba(126, 231, 135, .35); }
 .cites:not(.on) .cell.lit { background: #1a2030; box-shadow: none; }
-.cites.on .cell.lit { animation: bin-on .25s ease-out both; animation-delay: calc(var(--r) * 350ms + var(--k) * 22ms); }
-.cites.on .cell.tip { animation: bin-on .25s ease-out both, bin-tip 1.6s ease-in-out infinite; animation-delay: calc(var(--r) * 350ms + var(--k) * 22ms), calc(var(--r) * 350ms + var(--k) * 22ms + 400ms); }
+.cites.on .cell.lit { animation: bin-on .4s ease-out both; animation-delay: calc(var(--r) * 700ms + var(--k) * 45ms); }
+.cites.on .cell.tip { animation: bin-on .4s ease-out both, bin-tip 1.6s ease-in-out infinite; animation-delay: calc(var(--r) * 700ms + var(--k) * 45ms), calc(var(--r) * 700ms + var(--k) * 45ms + 650ms); }
 @keyframes bin-on { from { background: #1a2030; box-shadow: none; transform: scaleY(.4); } 60% { background: #c5f7c9; transform: scaleY(1.25); } to { background: #7ee787; transform: none; } }
 @keyframes bin-tip { 50% { background: #c5f7c9; box-shadow: 0 0 12px rgba(126, 231, 135, .8); } }
 .bar-row:hover .cell.lit { background: #a8f0ad; }

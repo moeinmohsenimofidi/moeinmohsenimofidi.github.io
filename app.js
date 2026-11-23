@@ -225,7 +225,7 @@
     box.classList.add("on");
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     box.querySelectorAll(".count").forEach((el) => {
-      const to = +el.dataset.to, t0 = performance.now(), dur = 1400;
+      const to = +el.dataset.to, t0 = performance.now(), dur = 2800;
       const step = (t) => {
         const p = Math.min(1, (t - t0) / dur);
         el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
